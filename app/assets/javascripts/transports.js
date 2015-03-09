@@ -1,43 +1,74 @@
 /*
-function initialize() {
-    var mapOptions = {
-	center: { lat: -34.397, lng: 150.644 },
-	zoom: 8
-    };
-    var map = new google.maps.Map(document.getElementById("map-canvas"),
-				  mapOptions);
-}
+ function initialize() {
+ var mapOptions = {
+ center: { lat: -34.397, lng: 150.644 },
+ zoom: 8
+ };
+ var map = new google.maps.Map(document.getElementById("map-canvas"),
+ mapOptions);
+ }
 
-google.maps.event.addDomListener(window, 'load', initialize);
-*/
-/*
-var map;
-var geocoder;
-var bounds = new google.maps.LanLngBounds();
-var markersArray = [];
+ google.maps.event.addDomListener(window, 'load', initialize);
+ */
 
-var origin;
-var destination;
-
-function initialize() {
+function initialize(origin, destination) {
     var service = new google.maps.DistanceMatrixService();
     service.getDistanceMatrix(
-	{
-	    origins: [origin],
-	    destinations: [destination],
-	    travelMode: google.maps.TravelMode.DRIVING,
-	    unitSystem: google.maps.UnitSystem.METRIC,
-	    avoidHighways: false,
-	    avoidTolls: false
-	}, callback);
-}*/
+        {
+            origins: [origin],
+            destinations: [destination],
+            travelMode: google.maps.TravelMode.WALKING,
+            unitSystem: google.maps.UnitSystem.METRIC,
+            avoidHighways: false,
+            avoidTolls: false
+        }, callback);
+}
 
-$(document).ready(function() {
-    $("button").click(function () {
-	origin = $("#from").val();
-	destination = $("#to").val();
-	$("#randomshit").append(origin);
-	$("#randomshit").append(destination);
+function callback(response, status) {
+    console.log("Response status is %s", status);
+    console.log("Response is %s", response);
+    console.log("Response origin is %s", response.originAddresses);
+
+    if (status != google.maps.DistanceMatrixStatus.OK) {
+        alert('Error was: ' + status);
+    } else {
+
+        var origins = response.originAddresses;
+        var destinations = response.destinationAddresses;
+        var outputWalking = document.getElementById('outputWalking');
+        outputWalking.innerHTML = '';
+
+        var results = response.rows[0].elements;
+        var result = results[0]
+        console.log("Duration is %s", results[0].duration.value);
+        var calorieBurn = 3 * results[0].duration.value / 60;
+        var currentDate = new Date();
+        console.log("%s", currentDate.getHours());
+
+        var duration = Math.round(result.duration.value / 60);
+        console.log("Duration is %s", duration);
+        var arrivalTime = (currentDate.getMinutes() + duration);
+        var arrivalMinute = arrivalTime % 60;
+        var arrivalHour = currentDate.getHours() + Math.floor(arrivalTime / 60);
+        console.log("Arrival hour is %s", arrivalHour);
+        console.log("Arrival minute is %s", arrivalMinute);
+        //var arrivalTime =
+        outputWalking.innerHTML += 'Walking: <br>' + result.duration.text +
+        //+ " and you burn " + calorieBurn + " calories!" +
+        ' and you\'ll arrive ' + arrivalHour + ":" + arrivalMinute + '<br><br>';
+    }
+}
+
+$(document).ready(function () {
+    $(".form_submit").click(function () {
+        var region = " Oslo"
+        var origin = $("#from").val();
+        origin = origin.concat(region);
+        var destination = $("#to").val();
+        destination = destination.concat(region);
+        console.log("Origin: %s. Destination: %s", origin, destination);
+        initialize(origin, destination);
+
     });
 });
 		   

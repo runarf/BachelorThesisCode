@@ -1,9 +1,14 @@
-<%= label_tag(:from) %>
-<%= text_field_tag(:from) %>
-<%= label_tag(:to) %>
-<%= text_field_tag(:to) %>
-<%= button_tag(:send)  %>
+<br><br><br><br>
 
-<div id="randomshit"></div>
+<%= form_tag('/transports', remote: true) do %>
+    <%= label_tag(:from) %>
+    <%= text_field_tag(:from) %>
+    <%= label_tag(:to) %>
+    <%= text_field_tag(:to) %>
+    <%= submit_tag 'Send', class: "form_submit" %>
+<% end %>
+
+<div id="outputBus"></div>
+<div id="outputWalking"></div>
 
 <!--<div id="map-canvas"></div>-->
