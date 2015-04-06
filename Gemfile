@@ -27,6 +27,8 @@ gem 'httparty'
 
 gem "geocoder"
 
+gem 'geoutm', git: 'https://github.com/zydeco/geoutm.git'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

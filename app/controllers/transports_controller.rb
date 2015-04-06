@@ -27,6 +27,14 @@ class TransportsController < ApplicationController
 
   def new
 
+    latlon =  Geocoder.coordinates("Oslo")#("#{params[:from]} Oslo")
+    pp latlon
+    coordinate = GeoUtm::LatLon.new latlon[0], latlon[1]
+    pp coordinate
+    utm = coordinate.to_utm
+    pp utm
+    pp utm.to_lat_lon
+
     @trip = Transport.new
     departure = Ruter.getPlaceWithName(params[:from])
     departure_place = departure[0]["ID"]
