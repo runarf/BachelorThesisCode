@@ -3,7 +3,7 @@
 <head>
   <title>Gmaps2</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= content_tag(:script, "", type: "text/javascript", src: "http://maps.googleapis.com/maps/api/js?libraries=places") %>
+  <%= content_tag(:script, "", type: "text/javascript", src: "http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false") %>
 
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>

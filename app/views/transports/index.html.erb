@@ -1,6 +1,7 @@
 <br><br><br><br>
 
 <%= form_tag('/transports', remote: true) do %>
+    <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
     <%= label_tag(:from) %>
     <%= text_field_tag(:from) %>
     <%= label_tag(:to) %>

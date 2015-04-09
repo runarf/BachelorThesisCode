@@ -47,6 +47,12 @@ function callback(response, status) {
 }
 
 $(document).ready(function () {
+    console.log("Starting javascript");
+    $("#from").geocomplete();
+    $("#to").geocomplete();
+    $.fn.geocomplete("#from");
+    $.fn.geocomplete("#to");
+    console.log("Autocomplete is initialized");
     $(".form_submit").click(function () {
         var region = " Oslo"
         var origin = $("#from").val();
@@ -55,7 +61,6 @@ $(document).ready(function () {
         destination = destination.concat(region);
         console.log("Origin: %s. Destination: %s", origin, destination);
         initialize(origin, destination);
-
-    });
+    });23
 });
 		   

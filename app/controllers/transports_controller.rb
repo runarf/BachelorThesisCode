@@ -25,16 +25,8 @@ class TransportsController < ApplicationController
   end
 
 
-  def new
-
-    latlon =  Geocoder.coordinates("Oslo")#("#{params[:from]} Oslo")
-    pp latlon
-    coordinate = GeoUtm::LatLon.new latlon[0], latlon[1]
-    pp coordinate
-    utm = coordinate.to_utm
-    pp utm
-    pp utm.to_lat_lon
-
+  def create
+    byebug
     @trip = Transport.new
     departure = Ruter.getPlaceWithName(params[:from])
     departure_place = departure[0]["ID"]
@@ -43,7 +35,6 @@ class TransportsController < ApplicationController
 
     trip = Ruter.getRoute(departure_place, arrival_place)
     trip = trip["TravelProposals"][0]
-    pp trip["Stages"].length
     @trip.transfers = trip["Stages"].length
     @trip.departure_place = params[:from]
     @trip.departure_time = to_hour_minute(trip["DepartureTime"])
@@ -53,7 +44,7 @@ class TransportsController < ApplicationController
     @trip.duration = to_minute(trip["TotalTravelTime"]) + time_diff
 
     respond_to do |format|
-      format.js {}
+      format.js { }
     end
 
   end
