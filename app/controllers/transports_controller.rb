@@ -24,17 +24,22 @@ class TransportsController < ApplicationController
 
   def create
     @trip = Transport.new
-    byebug
-    
-    departure = params[:from].split(',')
-    departure = Ruter.getPlaceWithName(departure[0])
-    departure_place = departure[0]["ID"]
 
-    arrival = params[:to].split(',')
-    arrival = Ruter.getPlaceWithName(arrival[0])
-    arrival_place = arrival[0]["ID"]
+    latLon = Geocoder.coordinates params[:from]
+    utm = GeoUtm::LatLon.new latLon[0], latLon[1]
+    utm = utm.to_utm
+    east = utm.e.to_i.to_s
+    north = utm.n.to_i.to_s
+    from_coord = "(x=" + east + ",y=" + north + ")"
 
-    trip = Ruter.getRoute(departure_place, arrival_place)
+    latLon = Geocoder.coordinates params[:to]
+    utm = GeoUtm::LatLon.new latLon[0], latLon[1]
+    utm = utm.to_utm
+    east = utm.e.to_i.to_s
+    north = utm.n.to_i.to_s
+    to_coord = "(x=" + east + ",y=" + north + ")"
+
+    trip = Ruter.getRoute(from_coord, to_coord)
     trip = trip["TravelProposals"][0]
     @trip.transfers = trip["Stages"].length
     @trip.departure_place = params[:from]
