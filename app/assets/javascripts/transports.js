@@ -50,11 +50,9 @@ $(document).ready(function () {
     console.log("Starting javascript");
     $("#from").geocomplete();
     $("#to").geocomplete();
-    $.fn.geocomplete("#from");
-    $.fn.geocomplete("#to");
     console.log("Autocomplete is initialized");
     $(".form_submit").click(function () {
-        var region = " Oslo"
+        var region = " Oslo";
         var origin = $("#from").val();
         origin = origin.concat(region);
         var destination = $("#to").val();

@@ -1,6 +1,3 @@
-
-#require 'ruter'
-
 class TransportsController < ApplicationController
 
   def index
@@ -26,10 +23,10 @@ class TransportsController < ApplicationController
 
 
   def create
-    byebug
     @trip = Transport.new
     departure = Ruter.getPlaceWithName(params[:from])
     departure_place = departure[0]["ID"]
+
     arrival = Ruter.getPlaceWithName(params[:to])
     arrival_place = arrival[0]["ID"]
 
