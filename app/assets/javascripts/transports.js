@@ -48,8 +48,15 @@ function callback(response, status) {
 
 $(document).ready(function () {
     console.log("Starting javascript");
-    $("#from").geocomplete();
-    $("#to").geocomplete();
+    var options = {
+      componentRestrictions: {country: 'no'}
+    };
+    var from = new google.maps.places.Autocomplete(
+        document.getElementById('from'), options
+    );
+    var to = new google.maps.places.Autocomplete(
+        document.getElementById('to'), options
+    );
     console.log("Autocomplete is initialized");
     $(".form_submit").click(function () {
         var region = " Oslo";
