@@ -1,1 +1,16 @@
-<div>Taking the bus:<br><%= @trip.duration %> mins and you'll arrive <%= @trip.arrival_time %> <br><br></div>
+<div>
+  <h1>Taking the bus:</h1>
+  <p>
+    <%= @trip.duration %> mins and you'll arrive <%= @trip.arrival_time %>
+  </p>
+</div>
+
+<div class="route">
+  <p>Take the following route</p>
+  <% @trip.transfers.times do |iter| %>
+      <% next if iter.even? %>
+      <p>Walk to <%= @trip.stages[iter].departureStop %></p>
+      <p>Take route <%= @trip.stages[iter].lineName %></p>
+      <p>to <%= @trip.stages[iter].arrivalStop%> </p>
+  <% end %>
+</div>

@@ -20,9 +20,13 @@ ActiveRecord::Schema.define(version: 20150417164141) do
     t.text     "arrivalTime"
     t.text     "lineName"
     t.text     "travelTime"
+    t.integer  "travelType"
+    t.integer  "trip_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
+
+  add_index "stages", ["trip_id"], name: "index_stages_on_trip_id"
 
   create_table "trips", force: :cascade do |t|
     t.float    "distance"

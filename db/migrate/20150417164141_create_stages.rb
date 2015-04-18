@@ -7,6 +7,8 @@ class CreateStages < ActiveRecord::Migration
       t.text :arrivalTime
       t.text :lineName
       t.text :travelTime
+      t.integer :travelType
+      t.belongs_to :trip, index: true
 
       t.timestamps null: false
     end

@@ -41,22 +41,32 @@ class TripsController < ApplicationController
     north = utm.n.to_i.to_s
     to_coord = "(x=" + east + ",y=" + north + ")"
 
-    trip = nil
-    i = 0
     # Get the route
-    while trip == nil && i < 100 do
-      trip = Ruter.getRoute(from_coord, to_coord)
-      i += 1
-    end
-
+    trip = Ruter.getRoute(from_coord, to_coord)
 
     # Get trip
     trip = trip["TravelProposals"][0]
 
-
     # Get stages
-    changes = trip["Stages"].length
+    stages = trip["Stages"]
     #puts trip.as_json.to_json
+    stages.each do |currStage|
+      stage = @trip.stages.build
+      stage.travelType = currStage["Transportation"]
+      time = "WalkingTime"
+
+      if (stage["travelType"] != Stage.travelTypes[:walking] and
+          stage["travelType"] != Stage.travelTypes[:dummy])
+        stage.departureStop = currStage["DepartureStop"]["Name"]
+        stage.arrivalStop = currStage["ArrivalStop"]["Name"]
+        stage.lineName = currStage["LineName"]
+        time = "TravelTime"
+      end
+
+      stage.travelTime = currStage[time]
+      stage.departureTime = currStage["DepartureTime"]
+      stage.arrivalTime = currStage["ArrivalTime"]
+    end
 
     # Find time from now until the bus goes
     @trip.departure_time = to_hour_minute(trip["DepartureTime"])
@@ -67,9 +77,12 @@ class TripsController < ApplicationController
     # Fill model
     @trip.departure_place = params[:from]
     @trip.arrival_place = params[:to]
-    @trip.transfers = changes
+    @trip.transfers = stages.length
+
+    @trip.save
+
     respond_to do |format|
-      format.js { }
+      format.js {}
     end
 
   end
