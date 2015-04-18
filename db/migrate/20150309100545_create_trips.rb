@@ -1,6 +1,6 @@
-class CreateTransports < ActiveRecord::Migration
+class CreateTrips < ActiveRecord::Migration
   def change
-    create_table :transports do |t|
+    create_table :trips do |t|
       t.float :distance
       t.text :duration
       t.text :departure_time

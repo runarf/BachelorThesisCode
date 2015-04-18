@@ -1,4 +1,4 @@
-class TransportsController < ApplicationController
+class TripsController < ApplicationController
 
   def index
 
@@ -23,8 +23,9 @@ class TransportsController < ApplicationController
 
 
   def create
-    @trip = Transport.new
+    @trip = Trip.new
 
+    # Get start coordinates
     latLon = Geocoder.coordinates params[:from]
     utm = GeoUtm::LatLon.new latLon[0], latLon[1]
     utm = utm.to_utm
@@ -32,6 +33,7 @@ class TransportsController < ApplicationController
     north = utm.n.to_i.to_s
     from_coord = "(x=" + east + ",y=" + north + ")"
 
+    # Get end coordinate
     latLon = Geocoder.coordinates params[:to]
     utm = GeoUtm::LatLon.new latLon[0], latLon[1]
     utm = utm.to_utm
@@ -39,16 +41,33 @@ class TransportsController < ApplicationController
     north = utm.n.to_i.to_s
     to_coord = "(x=" + east + ",y=" + north + ")"
 
-    trip = Ruter.getRoute(from_coord, to_coord)
+    trip = nil
+    i = 0
+    # Get the route
+    while trip == nil && i < 100 do
+      trip = Ruter.getRoute(from_coord, to_coord)
+      i += 1
+    end
+
+
+    # Get trip
     trip = trip["TravelProposals"][0]
-    @trip.transfers = trip["Stages"].length
-    @trip.departure_place = params[:from]
+
+
+    # Get stages
+    changes = trip["Stages"].length
+    #puts trip.as_json.to_json
+
+    # Find time from now until the bus goes
     @trip.departure_time = to_hour_minute(trip["DepartureTime"])
-    @trip.arrival_place = params[:to]
     @trip.arrival_time = to_hour_minute(trip["ArrivalTime"])
     time_diff = time_difference(trip["DepartureTime"].to_time)
     @trip.duration = to_minute(trip["TotalTravelTime"]) + time_diff
 
+    # Fill model
+    @trip.departure_place = params[:from]
+    @trip.arrival_place = params[:to]
+    @trip.transfers = changes
     respond_to do |format|
       format.js { }
     end

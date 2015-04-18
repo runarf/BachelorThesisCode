@@ -11,9 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150309151800) do
+ActiveRecord::Schema.define(version: 20150417164141) do
 
-  create_table "transports", force: :cascade do |t|
+  create_table "stages", force: :cascade do |t|
+    t.text     "departureStop"
+    t.text     "arrivalStop"
+    t.text     "departureTime"
+    t.text     "arrivalTime"
+    t.text     "lineName"
+    t.text     "travelTime"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "trips", force: :cascade do |t|
     t.float    "distance"
     t.text     "duration"
     t.text     "departure_time"
@@ -23,8 +34,6 @@ ActiveRecord::Schema.define(version: 20150309151800) do
     t.integer  "transfers"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.float    "latitude"
-    t.float    "longitude"
   end
 
 end
