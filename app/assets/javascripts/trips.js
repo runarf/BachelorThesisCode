@@ -75,23 +75,44 @@ function callback(response, status, transportation) {
 
         var results = response.rows[0].elements;
         var result = results[0];
-        var currentDate = new Date();
 
+        // Calculate arrival time
+        var currentDate = new Date();
         var duration = Math.round(result.duration.value / 60);
-        console.log("Duration is %s", duration);
         var arrivalTime = (currentDate.getMinutes() + duration);
         var arrivalMinute = arrivalTime % 60;
         var arrivalHour = currentDate.getHours() + Math.floor(arrivalTime / 60);
-        console.log("Arrival time is %s", arrivalHour);
+
+        // Create link to directions
         var gUrl = "http://maps.google.com/maps?saddr=" + origins + "&daddr=" + destinations + "&dirflg=" + dirflg;
         gUrl = encodeURI(gUrl);
         var directions = '<a href=' + gUrl + '> Directions </a>';
-        console.log("Arrival hour is %s", arrivalHour);
-        console.log("Arrival minute is %s", arrivalMinute);
+
+        // Output to html
         output.innerHTML += '<h1>' + transportType + ':</h1>' + result.duration.text +
         ' and you\'ll arrive ' + arrivalHour + ":" + arrivalMinute + '' +
         directions + '<br><br>';
     }
+}
+
+function httpGet(theUrl) {
+    var xmlHttp = null;
+
+    xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false );
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
+
+function getWeather(from) {
+    console.log("From is" + from.getPlace());
+    baseUrl = "http://www.yr.no/sted/Norge/postnummer/"; //0020/varsel.xml
+    var place = from.getPlace();
+    console.log("Place is" + JSON.stringify(place));
+    postal_code = place.address_components[0].postal_code;
+
+    weatherXml = httpGet(baseUrl + postal_code + "/varsel.xml");
+    console.log("Xml is" + weatherXml);
 }
 
 $(document).ready(function () {
@@ -115,6 +136,8 @@ $(document).ready(function () {
         var destination = $("#to").val();
         console.log("Origin: %s. Destination: %s", origin, destination);
         initialize(origin, destination);
+        console.log("Sending" + from.getPlace());
+        getWeather(from);
     });
 });
 		   
