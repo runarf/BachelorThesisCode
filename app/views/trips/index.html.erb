@@ -1,24 +1,26 @@
-<div class="container">
+<div class="row">
+
+  <%= form_tag '/trips', remote: true, role: "form" do %>
+      <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+
+      <div class="form-group">
+        <%= label_tag :from %>
+        <%= text_field_tag :from, nil, class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <%= label_tag :to %>
+        <%= text_field_tag :to, nil, class: 'form-control' %>
+      </div>
+
+      <%= submit_tag 'Send', class: "form_submit btn btn-primary" %>
+  <% end %>
+
   <div class="row">
-    <br><br><br><br>
 
-    <%= form_tag('/trips', remote: true) do %>
-        <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
-
-        <div class="form-group">
-          <%= label_tag(:from) %>
-          <%= text_field_tag(:from)%>
-        </div>
-        <div class="form-group">
-          <%= label_tag(:to, nil, placeholder: "to") %>
-          <%= text_field_tag(:to) %>
-        </div>
-
-        <%= submit_tag 'Send', class: "form_submit btn btn-primary" %>
-    <% end %>
-
-    <div id="outputBus"></div>
-    <div id="outputWalking"></div>
-
+    <div class="col-sm-3" id="outputBus"></div>
+    <div class="col-sm-3" id="outputWalking"></div>
+    <div class="col-sm-3" id="outputCycling"></div>
+    <div class="col-sm-3" id="outputDriving"></div>
   </div>
 </div>
+

@@ -6,11 +6,17 @@
   <%= content_tag(:script, "", type: "text/javascript", src: "http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false") %>
 
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+<div class="container">
+<div class="page-header">
+  <h1>Buss eller ga, thats the question</h1>
+</div>
 <%= yield %>
 
+    </div>
 </body>
 </html>

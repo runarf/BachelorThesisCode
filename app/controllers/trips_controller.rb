@@ -82,7 +82,7 @@ class TripsController < ApplicationController
     @trip.save
 
     respond_to do |format|
-      format.js {}
+      format.js {""}
     end
 
   end
