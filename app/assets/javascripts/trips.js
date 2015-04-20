@@ -99,19 +99,26 @@ function httpGet(theUrl) {
     var xmlHttp = null;
 
     xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", theUrl, false );
+    xmlHttp.open( "GET", theUrl, true );
     xmlHttp.send( null );
+    console.log("Xml response is " + xmlHttp);
     return xmlHttp.responseText;
 }
 
 function getWeather(from) {
     console.log("From is" + from.getPlace());
-    baseUrl = "http://www.yr.no/sted/Norge/postnummer/"; //0020/varsel.xml
+    baseUrl = "http://api.met.no/weatherapi/locationforecast/1.9/?"
     var place = from.getPlace();
     console.log("Place is" + JSON.stringify(place));
-    postal_code = place.address_components[0].postal_code;
+    console.log("Geometry is " + place.geometry)
 
-    weatherXml = httpGet(baseUrl + postal_code + "/varsel.xml");
+    // Only need two decimals
+    var lat = place.geometry.location.k.toString().match(/^\d+(?:\.\d{0,2})?/);
+    var lon = place.geometry.location.D.toString().match(/^\d+(?:\.\d{0,2})?/);
+    console.log("Place has lat %s and lon %s", lat, lon);
+
+
+    weatherXml = httpGet(baseUrl + "lat=" + lat + ";lon=" + lon);
     console.log("Xml is" + weatherXml);
 }
 
