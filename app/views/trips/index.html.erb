@@ -1,5 +1,6 @@
 <div class="row">
 
+
   <%= form_tag '/trips', remote: true, role: "form" do %>
       <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
 
@@ -30,6 +31,10 @@
 
       <%= submit_tag 'Send', class: "form_submit btn btn-primary" %>
   <% end %>
+
+  <div class="row">
+    <div class="col-sm-12" id="weather"></div>
+  </div>
 
   <div class="row">
 

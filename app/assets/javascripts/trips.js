@@ -13,17 +13,19 @@ function initialize(origin, destination) {
 
     var optionsCycle = $.extend(true, {}, optionsWalk);
     var optionsDrive = $.extend(true, {}, optionsWalk);
-    var optionsCommute = $.extend(true, {}, optionsWalk);
+    //var optionsCommute = $.extend(true, {}, optionsWalk);
     optionsCycle.travelMode = google.maps.TravelMode.BICYCLING;
     optionsDrive.travelMode = google.maps.TravelMode.DRIVING;
-    optionsCommute.travelMode = google.maps.TravelMode.TRANSIT;
+    //optionsCommute.travelMode = google.maps.TravelMode.TRANSIT;
 
     // Get distances
-    if ($("#public_transport").is(":checked")) {
+    /*if ($("#public_transport").is(":checked")) {
         service.getDistanceMatrix(optionsCommute, commuteCallback);
-    }
+    }*/
     if ($("#walking").is(":checked")) {
+        var t1 = window.performance.now();
         service.getDistanceMatrix(optionsWalk, walkCallback);
+        var t2 = window.performance.now();
     }
     if ($("#cycling").is(":checked")) {
         service.getDistanceMatrix(optionsCycle, cycleCallback);
@@ -31,6 +33,7 @@ function initialize(origin, destination) {
     if ($("#driving").is(":checked")) {
         service.getDistanceMatrix(optionsDrive, driveCallback);
     }
+    console.log("It took " + t2 - t1 " to get the distance");
 }
 
 function commuteCallback(response, status) {
@@ -103,13 +106,26 @@ function callback(response, status, transportation) {
     }
 }
 
+function displayWeather(data) {
+    console.log("Data is " + JSON.stringify(data));
+    var symbolVal = parseInt(data.query.results.location.symbol.number);
+    if (symbolVal < 10) {
+        symbolVal = ('0' + symbolVal).slice(-2);
+    }
+    var url = "http://symbol.yr.no/grafikk/sym/b100/" + symbolVal + "d.png";
+    console.log("Url is " + url);
+    var image = $("<img />").attr('src', url);
+    $("#weather").append(image);
+}
+
 
 function getWeather(from) {
     console.log("From is" + from.getPlace());
     var baseUrl = "http://query.yahooapis.com/v1/public/yql?q=";
     var select = "select * from xml where url=";
     var weatherUrl = "'http://api.met.no/weatherapi/locationforecast/1.9/?";
-    var where = " and itemPath='/weatherdata/product/time[1]/location/temperature | /weatherdata/product/time[2]/location/precipitation'";
+    var where = " and itemPath='/weatherdata/product/time[1]/location/temperature | " +
+        "/weatherdata/product/time[2]/location'";
     var format = "&format=json&callback=?";
     var place = from.getPlace();
 
@@ -122,10 +138,7 @@ function getWeather(from) {
     console.log("YQL is " + weatherYQL);
     weatherYQL = encodeURI(weatherYQL);
     console.log("YQL encoded is " + weatherYQL);
-    $.getJSON(weatherYQL,
-        function(data){
-            console.log("Data is " + JSON.stringify(data));
-        });
+    $.getJSON(weatherYQL, displayWeather);
 }
 
 $(document).ready(function () {
@@ -145,12 +158,13 @@ $(document).ready(function () {
         $("#outputWalking").empty();
         $("#outputCycling").empty();
         $("#outputDriving").empty();
+        $("#weather").empty();
         var origin = $("#from").val();
         var destination = $("#to").val();
         console.log("Origin: %s. Destination: %s", origin, destination);
         initialize(origin, destination);
         console.log("Sending" + from.getPlace());
-        getWeather(from);
+        //getWeather(from);
     });
 });
 		   
