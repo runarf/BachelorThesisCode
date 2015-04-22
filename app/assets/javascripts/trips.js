@@ -10,6 +10,7 @@ function initialize(origin, destination) {
         avoidHighways: false,
         avoidTolls: false
     };
+
     var optionsCycle = $.extend(true, {}, optionsWalk);
     var optionsDrive = $.extend(true, {}, optionsWalk);
     var optionsCommute = $.extend(true, {}, optionsWalk);
@@ -18,11 +19,18 @@ function initialize(origin, destination) {
     optionsCommute.travelMode = google.maps.TravelMode.TRANSIT;
 
     // Get distances
-    service.getDistanceMatrix(optionsWalk, walkCallback);
-    service.getDistanceMatrix(optionsCycle, cycleCallback);
-    service.getDistanceMatrix(optionsDrive, driveCallback);
-    service.getDistanceMatrix(optionsCommute, commuteCallback);
-
+    if ($("#public_transport").is(":checked")) {
+        service.getDistanceMatrix(optionsCommute, commuteCallback);
+    }
+    if ($("#walking").is(":checked")) {
+        service.getDistanceMatrix(optionsWalk, walkCallback);
+    }
+    if ($("#cycling").is(":checked")) {
+        service.getDistanceMatrix(optionsCycle, cycleCallback);
+    }
+    if ($("#driving").is(":checked")) {
+        service.getDistanceMatrix(optionsDrive, driveCallback);
+    }
 }
 
 function commuteCallback(response, status) {
@@ -95,37 +103,35 @@ function callback(response, status, transportation) {
     }
 }
 
-function httpGet(theUrl) {
-    var xmlHttp = null;
-
-    xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", theUrl, true );
-    xmlHttp.send( null );
-    console.log("Xml response is " + xmlHttp);
-    return xmlHttp.responseText;
-}
 
 function getWeather(from) {
     console.log("From is" + from.getPlace());
-    baseUrl = "http://api.met.no/weatherapi/locationforecast/1.9/?"
+    var baseUrl = "http://query.yahooapis.com/v1/public/yql?q=";
+    var select = "select * from xml where url=";
+    var weatherUrl = "'http://api.met.no/weatherapi/locationforecast/1.9/?";
+    var where = " and itemPath='/weatherdata/product/time[1]/location/temperature | /weatherdata/product/time[2]/location/precipitation'";
+    var format = "&format=json&callback=?";
     var place = from.getPlace();
-    console.log("Place is" + JSON.stringify(place));
-    console.log("Geometry is " + place.geometry)
 
     // Only need two decimals
     var lat = place.geometry.location.k.toString().match(/^\d+(?:\.\d{0,2})?/);
     var lon = place.geometry.location.D.toString().match(/^\d+(?:\.\d{0,2})?/);
     console.log("Place has lat %s and lon %s", lat, lon);
 
-
-    weatherXml = httpGet(baseUrl + "lat=" + lat + ";lon=" + lon);
-    console.log("Xml is" + weatherXml);
+    weatherYQL = baseUrl + select + weatherUrl + "lat=" + lat + ";lon=" + lon + "'" + where + format;
+    console.log("YQL is " + weatherYQL);
+    weatherYQL = encodeURI(weatherYQL);
+    console.log("YQL encoded is " + weatherYQL);
+    $.getJSON(weatherYQL,
+        function(data){
+            console.log("Data is " + JSON.stringify(data));
+        });
 }
 
 $(document).ready(function () {
     console.log("Starting javascript");
     var options = {
-      componentRestrictions: {country: 'no'}
+        componentRestrictions: {country: 'no'}
     };
     var from = new google.maps.places.Autocomplete(
         document.getElementById('from'), options
