@@ -13,17 +13,20 @@ function initialize(origin, destination) {
 
     var optionsCycle = $.extend(true, {}, optionsWalk);
     var optionsDrive = $.extend(true, {}, optionsWalk);
-    var optionsCommute = $.extend(true, {}, optionsWalk);
+    //var optionsCommute = $.extend(true, {}, optionsWalk);
     optionsCycle.travelMode = google.maps.TravelMode.BICYCLING;
     optionsDrive.travelMode = google.maps.TravelMode.DRIVING;
-    optionsCommute.travelMode = google.maps.TravelMode.TRANSIT;
+    //optionsCommute.travelMode = google.maps.TravelMode.TRANSIT;
 
     // Get distances
-    if ($("#public_transport").is(":checked")) {
+    /*if ($("#public_transport").is(":checked")) {
         service.getDistanceMatrix(optionsCommute, commuteCallback);
-    }
+    }*/
     if ($("#walking").is(":checked")) {
+        console.time("Distance");
+        console.timeStamp("Measuring time");
         service.getDistanceMatrix(optionsWalk, walkCallback);
+        console.timeEnd("Distance");
     }
     if ($("#cycling").is(":checked")) {
         service.getDistanceMatrix(optionsCycle, cycleCallback);
@@ -103,29 +106,36 @@ function callback(response, status, transportation) {
     }
 }
 
+function displayWeather(data) {
+    var symbolVal = parseInt(data.query.results.location.symbol.number);
+    if (symbolVal < 10) {
+        symbolVal = ('0' + symbolVal).slice(-2);
+    }
+    var url = "http://symbol.yr.no/grafikk/sym/b100/" + symbolVal + "d.png";
+    var image = $("<img />").attr('src', url);
+    $("#weather").append(image);
+}
+
 
 function getWeather(from) {
     console.log("From is" + from.getPlace());
     var baseUrl = "http://query.yahooapis.com/v1/public/yql?q=";
     var select = "select * from xml where url=";
     var weatherUrl = "'http://api.met.no/weatherapi/locationforecast/1.9/?";
-    var where = " and itemPath='/weatherdata/product/time[1]/location/temperature | /weatherdata/product/time[2]/location/precipitation'";
+    var where = " and itemPath='/weatherdata/product/time[1]/location/temperature | " +
+        "/weatherdata/product/time[2]/location'";
     var format = "&format=json&callback=?";
     var place = from.getPlace();
 
     // Only need two decimals
     var lat = place.geometry.location.k.toString().match(/^\d+(?:\.\d{0,2})?/);
     var lon = place.geometry.location.D.toString().match(/^\d+(?:\.\d{0,2})?/);
-    console.log("Place has lat %s and lon %s", lat, lon);
 
     weatherYQL = baseUrl + select + weatherUrl + "lat=" + lat + ";lon=" + lon + "'" + where + format;
-    console.log("YQL is " + weatherYQL);
     weatherYQL = encodeURI(weatherYQL);
-    console.log("YQL encoded is " + weatherYQL);
-    $.getJSON(weatherYQL,
-        function(data){
-            console.log("Data is " + JSON.stringify(data));
-        });
+    console.time("Weather");
+    $.getJSON(weatherYQL, displayWeather);
+    console.timeEnd("Weather");
 }
 
 $(document).ready(function () {
@@ -139,17 +149,15 @@ $(document).ready(function () {
     var to = new google.maps.places.Autocomplete(
         document.getElementById('to'), options
     );
-    console.log("Autocomplete is initialized");
     $(".form_submit").click(function () {
         $("#outputBus").empty();
         $("#outputWalking").empty();
         $("#outputCycling").empty();
         $("#outputDriving").empty();
+        $("#weather").empty();
         var origin = $("#from").val();
         var destination = $("#to").val();
-        console.log("Origin: %s. Destination: %s", origin, destination);
         initialize(origin, destination);
-        console.log("Sending" + from.getPlace());
         getWeather(from);
     });
 });

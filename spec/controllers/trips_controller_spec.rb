@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe TransportsController do
+RSpec.describe TripsController do
   describe "GET index" do
     it "renders the index template" do
       get :index

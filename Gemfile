@@ -33,6 +33,9 @@ gem "geocoder"
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 gem 'geoutm', git: 'https://github.com/zydeco/geoutm.git'
 
+gem 'rails-perftest'
+gem 'ruby-prof'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
