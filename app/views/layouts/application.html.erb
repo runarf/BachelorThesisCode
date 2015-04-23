@@ -2,10 +2,10 @@
 <html>
 <head>
   <title>Gmaps2</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= content_tag(:script, "", type: "text/javascript", src: "http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false") %>
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= content_tag(:script, "", type: "text/javascript", src: "https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false") %>
 
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application' %>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <%= csrf_meta_tags %>
