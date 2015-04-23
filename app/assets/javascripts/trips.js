@@ -23,9 +23,10 @@ function initialize(origin, destination) {
         service.getDistanceMatrix(optionsCommute, commuteCallback);
     }*/
     if ($("#walking").is(":checked")) {
-        var t1 = window.performance.now();
+        console.time("Distance");
+        console.timeStamp("Measuring time");
         service.getDistanceMatrix(optionsWalk, walkCallback);
-        var t2 = window.performance.now();
+        console.timeEnd("Distance");
     }
     if ($("#cycling").is(":checked")) {
         service.getDistanceMatrix(optionsCycle, cycleCallback);
@@ -33,7 +34,6 @@ function initialize(origin, destination) {
     if ($("#driving").is(":checked")) {
         service.getDistanceMatrix(optionsDrive, driveCallback);
     }
-    console.log("It took " + t2 - t1 " to get the distance");
 }
 
 function commuteCallback(response, status) {
@@ -107,13 +107,11 @@ function callback(response, status, transportation) {
 }
 
 function displayWeather(data) {
-    console.log("Data is " + JSON.stringify(data));
     var symbolVal = parseInt(data.query.results.location.symbol.number);
     if (symbolVal < 10) {
         symbolVal = ('0' + symbolVal).slice(-2);
     }
     var url = "http://symbol.yr.no/grafikk/sym/b100/" + symbolVal + "d.png";
-    console.log("Url is " + url);
     var image = $("<img />").attr('src', url);
     $("#weather").append(image);
 }
@@ -132,13 +130,12 @@ function getWeather(from) {
     // Only need two decimals
     var lat = place.geometry.location.k.toString().match(/^\d+(?:\.\d{0,2})?/);
     var lon = place.geometry.location.D.toString().match(/^\d+(?:\.\d{0,2})?/);
-    console.log("Place has lat %s and lon %s", lat, lon);
 
     weatherYQL = baseUrl + select + weatherUrl + "lat=" + lat + ";lon=" + lon + "'" + where + format;
-    console.log("YQL is " + weatherYQL);
     weatherYQL = encodeURI(weatherYQL);
-    console.log("YQL encoded is " + weatherYQL);
+    console.time("Weather");
     $.getJSON(weatherYQL, displayWeather);
+    console.timeEnd("Weather");
 }
 
 $(document).ready(function () {
@@ -152,7 +149,6 @@ $(document).ready(function () {
     var to = new google.maps.places.Autocomplete(
         document.getElementById('to'), options
     );
-    console.log("Autocomplete is initialized");
     $(".form_submit").click(function () {
         $("#outputBus").empty();
         $("#outputWalking").empty();
@@ -161,10 +157,8 @@ $(document).ready(function () {
         $("#weather").empty();
         var origin = $("#from").val();
         var destination = $("#to").val();
-        console.log("Origin: %s. Destination: %s", origin, destination);
         initialize(origin, destination);
-        console.log("Sending" + from.getPlace());
-        //getWeather(from);
+        getWeather(from);
     });
 });
 		   
