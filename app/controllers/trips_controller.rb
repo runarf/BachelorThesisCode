@@ -11,6 +11,8 @@ class TripsController < ApplicationController
     hours * 60 + minutes
   end
 
+  #lungeavdelinga 9 913. 1300.
+
   def to_hour_minute(time)
     time = DateTime.parse(time)
     time = time.strftime("%H:%M")
@@ -82,7 +84,12 @@ class TripsController < ApplicationController
     @trip.save
 
     respond_to do |format|
-      format.js {""}
+      format.js do
+        ""
+      end
+      format.html do
+        "Hei"
+      end
     end
 
   end
