@@ -13,9 +13,9 @@ function initialize(origin, destination) {
 
     var optionsCycle = $.extend(true, {}, optionsWalk);
     var optionsDrive = $.extend(true, {}, optionsWalk);
-    //var optionsCommute = $.extend(true, {}, optionsWalk);
     optionsCycle.travelMode = google.maps.TravelMode.BICYCLING;
     optionsDrive.travelMode = google.maps.TravelMode.DRIVING;
+    //var optionsCommute = $.extend(true, {}, optionsWalk);
     //optionsCommute.travelMode = google.maps.TravelMode.TRANSIT;
 
     // Get distances
@@ -118,7 +118,7 @@ function displayWeather(data) {
 
 
 function getWeather(from) {
-    console.log("From is" + from.getPlace());
+    // Create query to YQL
     var baseUrl = "http://query.yahooapis.com/v1/public/yql?q=";
     var select = "select * from xml where url=";
     var weatherUrl = "'http://api.met.no/weatherapi/locationforecast/1.9/?";
@@ -126,10 +126,11 @@ function getWeather(from) {
         "/weatherdata/product/time[2]/location'";
     var format = "&format=json&callback=?";
     var place = from.getPlace();
+    console.log(JSON.stringify(place))
 
-    // Only need two decimals
-    var lat = place.geometry.location.k.toString().match(/^\d+(?:\.\d{0,2})?/);
-    var lon = place.geometry.location.D.toString().match(/^\d+(?:\.\d{0,2})?/);
+    // Only need two decimals of latitude and longitude to get good results
+    var lat = place.geometry.location.A.toString().match(/^\d+(?:\.\d{0,2})?/);
+    var lon = place.geometry.location.F.toString().match(/^\d+(?:\.\d{0,2})?/);
 
     weatherYQL = baseUrl + select + weatherUrl + "lat=" + lat + ";lon=" + lon + "'" + where + format;
     weatherYQL = encodeURI(weatherYQL);
@@ -140,6 +141,8 @@ function getWeather(from) {
 
 $(document).ready(function () {
     console.log("Starting javascript");
+
+    // Setup autocomplete for input forms
     var options = {
         componentRestrictions: {country: 'no'}
     };
@@ -149,14 +152,22 @@ $(document).ready(function () {
     var to = new google.maps.places.Autocomplete(
         document.getElementById('to'), options
     );
+
+    // Register "save" button click
     $(".form_submit").click(function () {
+
+        // Clean up possible earlier outputs
         $("#outputBus").empty();
         $("#outputWalking").empty();
         $("#outputCycling").empty();
         $("#outputDriving").empty();
         $("#weather").empty();
+
+        // Get departure and arrival place
         var origin = $("#from").val();
         var destination = $("#to").val();
+
+
         initialize(origin, destination);
         getWeather(from);
     });
