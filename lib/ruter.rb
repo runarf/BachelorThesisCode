@@ -4,12 +4,17 @@ class Ruter
   base_uri 'reisapi.ruter.no'
 
   def self.getRoute(from, to)
-    response = get('/Travel/GetTravels/', query: {
-                                            fromplace: from,
-                                            toplace: to,
-                                            isAfter: true,
-                                        })
-end
+    response = nil
+    time = Benchmark.realtime do
+      response = get('/Travel/GetTravels/', query: {
+                                              fromplace: from,
+                                              toplace: to,
+                                              isAfter: true,
+                                          })
+    end
+    puts "Time to get public transportation was #{time}"
+    return response
+  end
 
   def self.getPlaceWithName(place)
 
