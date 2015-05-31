@@ -127,8 +127,8 @@ function getWeather(from) {
     var format = "&format=json&callback=?";
     var place = from.getPlace();
     console.log(JSON.stringify(place))
-
-    // Only need two decimals of latitude and longitude to get good results
+ 
+turo   // Only need two decimals of latitude and longitude to get good results
     var lat = place.geometry.location.A.toString().match(/^\d+(?:\.\d{0,2})?/);
     var lon = place.geometry.location.F.toString().match(/^\d+(?:\.\d{0,2})?/);
 
@@ -166,7 +166,6 @@ $(document).ready(function () {
         // Get departure and arrival place
         var origin = $("#from").val();
         var destination = $("#to").val();
-
 
         initialize(origin, destination);
         getWeather(from);

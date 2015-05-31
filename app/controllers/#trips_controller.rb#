@@ -11,6 +11,7 @@ class TripsController < ApplicationController
     hours * 60 + minutes
   end
 
+  #lungeavdelinga 9 913. 1300.
 
   def to_hour_minute(time)
     time = DateTime.parse(time)
@@ -34,6 +35,8 @@ class TripsController < ApplicationController
     north = utm.n.to_i.to_s
     from_coord = "(x=" + east + ",y=" + north + ")"
 
+
+    
     # Get end coordinate
     latLon = Geocoder.coordinates params[:to]
     utm = GeoUtm::LatLon.new latLon[0], latLon[1]
