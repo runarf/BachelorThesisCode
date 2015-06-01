@@ -7,8 +7,4 @@ RSpec.describe TripsController do
       expect(response).to render_template :index
     end
   end
-
-  describe "GET new" do
-    it ""
-  end
 end
