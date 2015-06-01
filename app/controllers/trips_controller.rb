@@ -84,7 +84,7 @@ class TripsController < ApplicationController
 
     respond_to do |format|
       format.js do
-        ""
+        "" # the app/views/trips/create.js.erb does the work
       end
       format.html do
         "Hei"
