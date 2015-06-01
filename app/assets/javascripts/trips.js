@@ -108,10 +108,7 @@ function callback(response, status, transportation) {
 
 function displayWeather(data) {
     var symbolVal = parseInt(data.query.results.location.symbol.number);
-    if (symbolVal < 10) {
-        symbolVal = ('0' + symbolVal).slice(-2);
-    }
-    var url = "http://symbol.yr.no/grafikk/sym/b100/" + symbolVal + "d.png";
+    var url = "http://api.met.no/weatherapi/weathericon/1.1/?symbol=" + symbolVal + ";content_type=image/svg"
     var image = $("<img />").attr('src', url);
     $("#weather").append(image);
 }
@@ -128,7 +125,7 @@ function getWeather(from) {
     var place = from.getPlace();
     console.log(JSON.stringify(place))
  
-turo   // Only need two decimals of latitude and longitude to get good results
+    // Only need two decimals of latitude and longitude to get good results
     var lat = place.geometry.location.A.toString().match(/^\d+(?:\.\d{0,2})?/);
     var lon = place.geometry.location.F.toString().match(/^\d+(?:\.\d{0,2})?/);
 
