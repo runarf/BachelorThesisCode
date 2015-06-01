@@ -1,9 +1,5 @@
 class TripsController < ApplicationController
 
-  def index
-
-  end
-
   def to_minute(input)
     input = DateTime.parse(input)
     hours = input.strftime("%H").to_i
