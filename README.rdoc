@@ -1,28 +1,17 @@
-== README
+=NAME
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Kostr, making your transportation choice easier
 
-Things you may want to cover:
+=USAGE
 
-* Ruby version
+bundle install
+rake db:migrate
+rails server
 
-* System dependencies
+=DESCRIPTION
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Kostr is an application that can help you choose what transportation to take.
+It gives the time it takes to walk, cycle, drive and take public transport.
+It currently only works fully in Oslo, but the plan is to make it work everywhere in Norway
 
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.

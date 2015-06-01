@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class TripsController - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="ApplicationController.html">ApplicationController</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-create">#create</a>
+    
+    <li ><a href="#method-i-index">#index</a>
+    
+    <li ><a href="#method-i-time_difference">#time_difference</a>
+    
+    <li ><a href="#method-i-to_hour_minute">#to_hour_minute</a>
+    
+    <li ><a href="#method-i-to_minute">#to_minute</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-TripsController">
+  <h1 id="class-TripsController" class="class">
+    class TripsController
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="create-source">
+            <pre><span class="ruby-comment"># File app/controllers/trips_controller.rb, line 26</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
+  <span class="ruby-ivar">@trip</span> = <span class="ruby-constant">Trip</span>.<span class="ruby-identifier">new</span>
+
+  <span class="ruby-comment"># Get start coordinates</span>
+  <span class="ruby-identifier">latLon</span> = <span class="ruby-constant">Geocoder</span>.<span class="ruby-identifier">coordinates</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:from</span>]
+  <span class="ruby-identifier">utm</span> = <span class="ruby-constant">GeoUtm</span><span class="ruby-operator">::</span><span class="ruby-constant">LatLon</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">latLon</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">latLon</span>[<span class="ruby-value">1</span>]
+  <span class="ruby-identifier">utm</span> = <span class="ruby-identifier">utm</span>.<span class="ruby-identifier">to_utm</span>
+  <span class="ruby-identifier">east</span> = <span class="ruby-identifier">utm</span>.<span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
+  <span class="ruby-identifier">north</span> = <span class="ruby-identifier">utm</span>.<span class="ruby-identifier">n</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
+  <span class="ruby-identifier">from_coord</span> = <span class="ruby-string">&quot;(x=&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">east</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;,y=&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">north</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;)&quot;</span>
+
+  <span class="ruby-comment"># Get end coordinate</span>
+  <span class="ruby-identifier">latLon</span> = <span class="ruby-constant">Geocoder</span>.<span class="ruby-identifier">coordinates</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:to</span>]
+  <span class="ruby-identifier">utm</span> = <span class="ruby-constant">GeoUtm</span><span class="ruby-operator">::</span><span class="ruby-constant">LatLon</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">latLon</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">latLon</span>[<span class="ruby-value">1</span>]
+  <span class="ruby-identifier">utm</span> = <span class="ruby-identifier">utm</span>.<span class="ruby-identifier">to_utm</span>
+  <span class="ruby-identifier">east</span> = <span class="ruby-identifier">utm</span>.<span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
+  <span class="ruby-identifier">north</span> = <span class="ruby-identifier">utm</span>.<span class="ruby-identifier">n</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_s</span>
+  <span class="ruby-identifier">to_coord</span> = <span class="ruby-string">&quot;(x=&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">east</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;,y=&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">north</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;)&quot;</span>
+
+  <span class="ruby-comment"># Get the route</span>
+  <span class="ruby-identifier">trip</span> = <span class="ruby-constant">Ruter</span>.<span class="ruby-identifier">getRoute</span>(<span class="ruby-identifier">from_coord</span>, <span class="ruby-identifier">to_coord</span>)
+
+  <span class="ruby-comment"># Get trip</span>
+  <span class="ruby-identifier">trip</span> = <span class="ruby-identifier">trip</span>[<span class="ruby-string">&quot;TravelProposals&quot;</span>][<span class="ruby-value">0</span>]
+
+  <span class="ruby-comment"># Get stages</span>
+  <span class="ruby-identifier">stages</span> = <span class="ruby-identifier">trip</span>[<span class="ruby-string">&quot;Stages&quot;</span>]
+  <span class="ruby-comment">#puts trip.as_json.to_json</span>
+  <span class="ruby-identifier">stages</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">currStage</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">stage</span> = <span class="ruby-ivar">@trip</span>.<span class="ruby-identifier">stages</span>.<span class="ruby-identifier">build</span>
+    <span class="ruby-identifier">stage</span>.<span class="ruby-identifier">travelType</span> = <span class="ruby-identifier">currStage</span>[<span class="ruby-string">&quot;Transportation&quot;</span>]
+    <span class="ruby-identifier">time</span> = <span class="ruby-string">&quot;WalkingTime&quot;</span>
+
+    <span class="ruby-keyword">if</span> (<span class="ruby-identifier">stage</span>[<span class="ruby-string">&quot;travelType&quot;</span>] <span class="ruby-operator">!=</span> <span class="ruby-constant">Stage</span>.<span class="ruby-identifier">travelTypes</span>[<span class="ruby-value">:walking</span>] <span class="ruby-keyword">and</span>
+        <span class="ruby-identifier">stage</span>[<span class="ruby-string">&quot;travelType&quot;</span>] <span class="ruby-operator">!=</span> <span class="ruby-constant">Stage</span>.<span class="ruby-identifier">travelTypes</span>[<span class="ruby-value">:dummy</span>])
+      <span class="ruby-identifier">stage</span>.<span class="ruby-identifier">departureStop</span> = <span class="ruby-identifier">currStage</span>[<span class="ruby-string">&quot;DepartureStop&quot;</span>][<span class="ruby-string">&quot;Name&quot;</span>]
+      <span class="ruby-identifier">stage</span>.<span class="ruby-identifier">arrivalStop</span> = <span class="ruby-identifier">currStage</span>[<span class="ruby-string">&quot;ArrivalStop&quot;</span>][<span class="ruby-string">&quot;Name&quot;</span>]
+      <span class="ruby-identifier">stage</span>.<span class="ruby-identifier">lineName</span> = <span class="ruby-identifier">currStage</span>[<span class="ruby-string">&quot;LineName&quot;</span>]
+      <span class="ruby-identifier">time</span> = <span class="ruby-string">&quot;TravelTime&quot;</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-identifier">stage</span>.<span class="ruby-identifier">travelTime</span> = <span class="ruby-identifier">currStage</span>[<span class="ruby-identifier">time</span>]
+    <span class="ruby-identifier">stage</span>.<span class="ruby-identifier">departureTime</span> = <span class="ruby-identifier">currStage</span>[<span class="ruby-string">&quot;DepartureTime&quot;</span>]
+    <span class="ruby-identifier">stage</span>.<span class="ruby-identifier">arrivalTime</span> = <span class="ruby-identifier">currStage</span>[<span class="ruby-string">&quot;ArrivalTime&quot;</span>]
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># Find time from now until the bus goes</span>
+  <span class="ruby-ivar">@trip</span>.<span class="ruby-identifier">departure_time</span> = <span class="ruby-identifier">to_hour_minute</span>(<span class="ruby-identifier">trip</span>[<span class="ruby-string">&quot;DepartureTime&quot;</span>])
+  <span class="ruby-ivar">@trip</span>.<span class="ruby-identifier">arrival_time</span> = <span class="ruby-identifier">to_hour_minute</span>(<span class="ruby-identifier">trip</span>[<span class="ruby-string">&quot;ArrivalTime&quot;</span>])
+  <span class="ruby-identifier">time_diff</span> = <span class="ruby-identifier">time_difference</span>(<span class="ruby-identifier">trip</span>[<span class="ruby-string">&quot;DepartureTime&quot;</span>].<span class="ruby-identifier">to_time</span>)
+  <span class="ruby-ivar">@trip</span>.<span class="ruby-identifier">duration</span> = <span class="ruby-identifier">to_minute</span>(<span class="ruby-identifier">trip</span>[<span class="ruby-string">&quot;TotalTravelTime&quot;</span>]) <span class="ruby-operator">+</span> <span class="ruby-identifier">time_diff</span>
+
+  <span class="ruby-comment"># Fill model</span>
+  <span class="ruby-ivar">@trip</span>.<span class="ruby-identifier">departure_place</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:from</span>]
+  <span class="ruby-ivar">@trip</span>.<span class="ruby-identifier">arrival_place</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:to</span>]
+  <span class="ruby-ivar">@trip</span>.<span class="ruby-identifier">transfers</span> = <span class="ruby-identifier">stages</span>.<span class="ruby-identifier">length</span>
+
+  <span class="ruby-ivar">@trip</span>.<span class="ruby-identifier">save</span>
+
+  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-string">&quot;&quot;</span> <span class="ruby-comment"># the app/views/trips/create.js.erb does the work</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-string">&quot;Hei&quot;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-index" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">index</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="index-source">
+            <pre><span class="ruby-comment"># File app/controllers/trips_controller.rb, line 3</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-time_difference" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">time_difference</span><span
+            class="method-args">(time)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="time_difference-source">
+            <pre><span class="ruby-comment"># File app/controllers/trips_controller.rb, line 20</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">time_difference</span>(<span class="ruby-identifier">time</span>)
+  <span class="ruby-identifier">diff_seconds</span> = (<span class="ruby-identifier">time</span>.<span class="ruby-identifier">to_time</span> <span class="ruby-operator">-</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">round</span>).<span class="ruby-identifier">round</span>
+  <span class="ruby-identifier">diff_minutes</span> = <span class="ruby-identifier">diff_seconds</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-to_hour_minute" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_hour_minute</span><span
+            class="method-args">(time)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="to_hour_minute-source">
+            <pre><span class="ruby-comment"># File app/controllers/trips_controller.rb, line 15</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_hour_minute</span>(<span class="ruby-identifier">time</span>)
+  <span class="ruby-identifier">time</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">time</span>)
+  <span class="ruby-identifier">time</span> = <span class="ruby-identifier">time</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%H:%M&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-to_minute" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_minute</span><span
+            class="method-args">(input)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="to_minute-source">
+            <pre><span class="ruby-comment"># File app/controllers/trips_controller.rb, line 7</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_minute</span>(<span class="ruby-identifier">input</span>)
+  <span class="ruby-identifier">input</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">input</span>)
+  <span class="ruby-identifier">hours</span> = <span class="ruby-identifier">input</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%H&quot;</span>).<span class="ruby-identifier">to_i</span>
+  <span class="ruby-identifier">minutes</span> = <span class="ruby-identifier">input</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%M&quot;</span>).<span class="ruby-identifier">to_i</span>
+  <span class="ruby-identifier">hours</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">minutes</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

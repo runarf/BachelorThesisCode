@@ -1,0 +1,9 @@
+Mon, 01 Jun 2015 10:40:03 +0200
+README.rdoc	Mon, 01 Jun 2015 10:37:31 +0200
+app/controllers/application_controller.rb	Sun, 03 May 2015 14:11:02 +0200
+app/controllers/trips_controller.rb	Mon, 01 Jun 2015 10:17:26 +0200
+app/helpers/application_helper.rb	Sun, 03 May 2015 14:11:02 +0200
+app/helpers/transports_helper.rb	Sun, 03 May 2015 14:11:02 +0200
+app/models/stage.rb	Sun, 03 May 2015 14:11:02 +0200
+app/models/trip.rb	Mon, 01 Jun 2015 10:17:26 +0200
+lib/ruter.rb	Mon, 01 Jun 2015 10:17:26 +0200
