@@ -3,7 +3,7 @@
 Kostr is a a web application I made in bachelor thesis. The main reason for the application is to learn how to work with external data through accessing web APIs and use them to create a new service. In this bachelor thesis a web application designed to make a transportation choice simpler is implemented. It is inspired by the pain I was having for choosing if I was going to wait for the bus to get home or if I should walk. The application lets the user find the difference in time between walking, cycling, driving or taking public transport between an origin and a destination. It also provides weather information to make it easier to decide what transportation to choose.
 
 
-In the CD provided with this thesis is the Kostr application. To run the application you need Ruby 2.1.5. To run the application the following commands has to be run in terminal.
+To run the application you need Ruby 2.1.5. To run the application the following commands has to be run in terminal.
 
 * bundle install
 * rake db:migrate
