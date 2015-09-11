@@ -1,28 +1,10 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Kostr is a a web application I made in bachelor thesis. The main reason for the application is to learn how to work with external data through accessing web APIs and use them to create a new service. In this bachelor thesis a web application designed to make a transportation choice simpler is implemented. It is inspired by the pain I was having for choosing if I was going to wait for the bus to get home or if I should walk. The application lets the user find the difference in time between walking, cycling, driving or taking public transport between an origin and a destination. It also provides weather information to make it easier to decide what transportation to choose.
 
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+In the CD provided with this thesis is the Kostr application. To run the application you need Ruby 2.1.5. To run the application the following commands has to be run in terminal.
+
+* bundle install
+* rake db:migrate
+* rails server
